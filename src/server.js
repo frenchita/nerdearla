@@ -9,9 +9,16 @@ app.get('/', function (req, res) {
   res.status(200).json({"msj": "hola mundo"})
 })
 
+/* routes */
+/* users */
 
-app.listen(process.env.APP_POST, () => {
-  console.log(`Running on ${process.env.APP_POST}`)
+const users = require('./routes/users')
+
+app.use('/users', users)
+
+
+app.listen(process.env.APP_PORT, () => {
+  console.log(`Server running on ${process.env.APP_PORT}`)
 })
 
 module.exports = app

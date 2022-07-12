@@ -19,7 +19,10 @@
   "devDependencies": {},
   "scripts": {
     "test": "jest",
-    "dev": "nodemon src/server.js"
+    "db:migrations": "npx sequelize-cli db:migrate",
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
   "repository": {
     "type": "git",
