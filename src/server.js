@@ -13,12 +13,14 @@ app.get('/', function (req, res) {
 /* users */
 
 const users = require('./routes/users')
-
 app.use('/users', users)
 
 
 app.listen(process.env.APP_PORT, () => {
   console.log(`Server running on ${process.env.APP_PORT}`)
-})
+}).on('error', function(err) { 
+  console.log(err)
+  process.exit(1);
+});
 
 module.exports = app
