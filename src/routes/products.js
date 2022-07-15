@@ -7,8 +7,6 @@ const validate_user = require('../../middlewares/validate_users');
 
 const validationProducts = {
   body: Joi.object({
-    user_id: Joi.number()
-      .required(),
     price: Joi.number()
       .required(),  
     stock: Joi.number()

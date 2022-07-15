@@ -19,6 +19,9 @@ app.use('/users', users)
 const products = require('./routes/products')
 app.use('/products', products)
 
+const orders = require('./routes/orders')
+app.use('/orders', orders)
+
 
 
 app.use(function(err, req, res, next) {
