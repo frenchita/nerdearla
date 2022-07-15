@@ -34,7 +34,7 @@ router.post('/', validate(validationUsers, {}, {}), async (req, res) => {
     const salt = Math.floor(Math.random() * 6) + 1
     const hash = bcrypt.hashSync(password, salt);
     const user = await User.create({ firstname, lastname, email, password:hash, salt});
-    const token = await jwt.sign({id: user.id, firstname: user.firstname, lastname: user.lastname}, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24});
+    const token = jwt.sign({id: user.id, firstname: user.firstname, lastname: user.lastname}, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24});
     
     res.json({token: token})
   } catch (error) {
