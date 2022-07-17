@@ -3,6 +3,7 @@ const router = express.Router()
 const { User } = require("../../models")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken');
+const validate_user = require('../../middlewares/validate_users');
 require('dotenv').config()
 
 
@@ -23,10 +24,6 @@ const validationUsers = {
   })
 ,}
 
-
-router.get('/', async (req, res) => {
-  res.json(await User.findAll())
-})
 
 router.post('/', validate(validationUsers, {}, {}), async (req, res) => {
   try {
