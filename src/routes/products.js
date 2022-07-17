@@ -31,7 +31,11 @@ router.post('/', validate(validationProducts, {}, {}), async (req, res) => {
 
     const {user_id, title, price, stock} = req.body
     const Product = await Products.create({ user_id:req.user.id, title, price, stock});
-    res.json({msj: `Product ${Product.title} has been added`})
+    res.status(201).json( { data: {
+        msj: `Product ${Product.title} has been added`,
+        id: Product.id 
+      }
+    })
   } catch (error) {
     res.status(400).json({msj: error})  
   }

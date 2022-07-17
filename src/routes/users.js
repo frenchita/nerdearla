@@ -36,7 +36,7 @@ router.post('/', validate(validationUsers, {}, {}), async (req, res) => {
     const user = await User.create({ firstname, lastname, email, password:hash, salt});
     const token = jwt.sign({id: user.id, firstname: user.firstname, lastname: user.lastname}, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24});
     
-    res.json({token: token})
+    res.status(201).json({data: {token}})
   } catch (error) {
     res.status(400).json({msj: error})  
   }

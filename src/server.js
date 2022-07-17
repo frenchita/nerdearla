@@ -22,6 +22,9 @@ app.use('/products', products)
 const orders = require('./routes/orders')
 app.use('/orders', orders)
 
+const home = require('./routes/home')
+app.use('/home', home)
+
 
 
 app.use(function(err, req, res, next) {

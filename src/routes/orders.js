@@ -7,12 +7,9 @@ const validate_user = require('../../middlewares/validate_users');
 
 const validationOrders = {
   body: Joi.object({
-    price: Joi.number()
-      .required(),
     products: Joi.array()
       .required() 
     },
-    
     )
 ,}
 
@@ -31,13 +28,13 @@ router.post('/', validate(validationOrders, {}, {}), async (req, res) => {
   
   try {
 
-    
+    const {products} = req.body
+    const order = await Orders.create({ user_id:req.user.id, status:"pending"}, { transaction: t });
 
-    const {price, products} = req.body
-    const order = await Orders.create({ user_id:req.user.id, price:price, status:"pending"}, { transaction: t });
+    let totalOrder = 0;
 
     for(let i=0; i<products.length; i++){
-        const product = await Products.findOne({where: { user_id: req.user.id, id:products[i].product_id }})
+        const product = await Products.findOne({where: { id:products[i].product_id }})
 
         if(!product) throw(`Product_id ${products[i].product_id} invalido`) //rollback db
 
@@ -47,11 +44,19 @@ router.post('/', validate(validationOrders, {}, {}), async (req, res) => {
 
         await Order_products.create({ order_id:order.id, product_id:products[i].product_id, quantity:products[i].quantity}, { transaction: t });
         await product.update({stock:newstock}, { transaction: t });
+
+        totalOrder += product.price * products[i].quantity;
     };
+
+    order.update({price: totalOrder});
 
     await t.commit();
 
-    res.json({msj: ` La order ${order.id} ha sido creada`})
+    res.status(201).json({ data: {
+      msj: ` La order ${order.id} ha sido creada`,
+      id: order.id
+    }
+    })
   } catch (error) {
     await t.rollback();
     res.status(400).json({msj: error})  
