@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/search', async (req, res) => {
-    const {q} = req.body
+    console.log(req.body)
 
     const results = await Products.findAll({
         where: {
