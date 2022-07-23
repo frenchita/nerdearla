@@ -17,3 +17,10 @@ spec:
                 name: core-srv
                 port:
                   number: 3000
+          - path: /home/.*
+            pathType: Prefix
+            backend:
+              service:
+                name: home-srv
+                port:
+                  number: 3000        
