@@ -24,6 +24,11 @@ const validationUsers = {
   })
 ,}
 
+router.get('/', function (req, res) {
+  console.log("health check users")
+  res.status(200).json({"msj": "hola mundo"})
+})
+
 
 router.post('/', validate(validationUsers, {}, {}), async (req, res) => {
   try {
