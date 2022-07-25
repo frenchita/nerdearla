@@ -2,10 +2,14 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 
+const logger = require('./middlewares/logger');
+
+
 const mongoose = require('mongoose');
 
 
 app.use(express.json())
+app.use(logger)
 
 
 mongoose.connect(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {useNewUrlParser: true});

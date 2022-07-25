@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-nerdearla-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: nerdearla.local
+      http:
+        paths:
+          - path: /.*
+            pathType: Prefix
+            backend:
+              service:
+                name: core-srv
+                port:
+                  number: 3000
+          - path: /home(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: home-srv
+                port:
+                  number: 3000

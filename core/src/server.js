@@ -2,9 +2,11 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const { validate, ValidationError, Joi } = require('express-validation')
+const logger = require('../middlewares/logger');
 
 
 app.use(express.json())
+app.use(logger)
 
 app.get('/', function (req, res) {
   console.log("health check")
