@@ -18,6 +18,13 @@ spec:
           env:
           - name: MARIADB_ROOT_PASSWORD
             value: "123456"
+          - name: MYSQL_DATABASE
+            value: "database_development"  
+          volumeMounts:
+          - name: nerdearla-db-storage
+            mountPath: /var/lib/mysql
+      volumes:
+      - name: nerdearla-db-storage
 ---
 apiVersion: v1
 kind: Service

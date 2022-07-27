@@ -3,7 +3,7 @@ import http from 'k6/http'
 import { randomString } from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 
 
-const base_url = "http://localhost:3000"
+const base_url = "http://nerdearla.local"
 
 export let options = {
     vus: 50,
