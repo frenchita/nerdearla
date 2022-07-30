@@ -6,11 +6,13 @@ const logger = require('./middlewares/logger');
 const nats = require('./nats/index');
 
 
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
+const Product = require("./models/product")
 
 
 app.use(express.json())
 app.use(logger)
+
 
 
 mongoose.connect(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {useNewUrlParser: true});
@@ -23,13 +25,7 @@ mongoose.connection.on('error', err => {
   process.exit()
 });
 
-const productsSchema = mongoose.Schema({
-    title: String,
-    price: Number,
-    stock: Number
-});
 
-const Product = mongoose.model('Product', productsSchema, 'productStore');
 
 app.get('/home/healthcheck', function (req, res) {
     console.log("health check home")
