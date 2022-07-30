@@ -32,6 +32,7 @@ app.get('/home/healthcheck', function (req, res) {
     res.status(200).json({"msj": "hola mundo"})
 })
 
+
 app.get('/home', async function (req, res) {
 
     let products = await Product.find()

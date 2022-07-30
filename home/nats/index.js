@@ -17,7 +17,14 @@ class NatsConnector {
 
       this.stan.subscribe('product:add').on('message', (msg) => {
         const data = JSON.parse(msg.getData())
-        new Product({title:data.title, price:data.price, stock:data.stock }).save();
+        new Product({id: data.id, user_id: data.user_id, title:data.title, price:data.price, stock:data.stock }).save();
+      }) 
+
+      this.stan.subscribe('product:stock').on('message', async (msg) => {
+        const data = JSON.parse(msg.getData())
+        const filter = { id: data.id };
+        const update = { stock: data.stock };
+        await Product.findOneAndUpdate(filter, update);
       }) 
 
     });

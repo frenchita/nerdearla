@@ -36,6 +36,7 @@ router.post('/', validate(validationProducts, {}, {}), async (req, res) => {
 
     const data = { user_id:req.user.id, title, price, stock}
     const Product = await Products.create(data);
+    data.id = Product.id
 
     nats.stan.publish('product:add', JSON.stringify(data), (err, guid) => {
       if (err) {

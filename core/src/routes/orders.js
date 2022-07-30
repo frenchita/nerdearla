@@ -4,6 +4,7 @@ const { sequelize, Products, Orders, Order_products } = require("../../models")
 
 const { validate, ValidationError, Joi } = require('express-validation');
 const validate_user = require('../../middlewares/validate_users');
+const nats = require("../../nats/index")
 
 const validationOrders = {
   body: Joi.object({
@@ -45,12 +46,22 @@ router.post('/', validate(validationOrders, {}, {}), async (req, res) => {
         await Order_products.create({ order_id:order.id, product_id:products[i].product_id, quantity:products[i].quantity}, { transaction: t });
         await product.update({stock:newstock}, { transaction: t });
 
+        nats.stan.publish('product:stock', JSON.stringify({id:product.id, stock:newstock}), (err, guid) => {
+          if (err) {
+            console.log('publish failed: ' + err)
+          } else {
+            console.log('published message with guid: ' + guid)
+          }
+        })
+
         totalOrder += product.price * products[i].quantity;
     };
 
     order.update({price: totalOrder});
 
     await t.commit();
+
+    
 
     res.status(201).json({ data: {
       msj: ` La order ${order.id} ha sido creada`,
