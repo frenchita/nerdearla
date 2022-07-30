@@ -17,17 +17,10 @@ spec:
                 name: core-srv
                 port:
                   number: 3000
-          - path: /products(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: home-srv
-                port:
-                  number: 3000
           - path: /home(.*)
             pathType: Prefix
             backend:
               service:
                 name: home-srv
                 port:
-                  number: 3000                  
+                  number: 3000

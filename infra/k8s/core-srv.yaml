@@ -19,7 +19,20 @@ spec:
           env:
           - name: APP_PORT
             value: "3000"
-
+          - name: APP_DATABASE_HOST
+            value: "core-mariadb-srv"
+          - name: APP_DATABASE_USER
+            value: "root"
+          - name: APP_DATABASE_PASS
+            value: "123456"
+          - name: APP_DATABASE_NAME
+            value: "database_development"
+          - name: JWT_SECRET
+            value: "cvbd345wsdfsdtg"
+          - name: NATS_HOST
+            value: "nats-srv"
+          - name: NATS_PORT
+            value: "4222"            
 ---
 apiVersion: v1
 kind: Service

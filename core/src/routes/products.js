@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { Products } = require("../../models")
-const {stan} = require("../../nats/index")
+const nats = require("../../nats/index")
 
 const { validate, ValidationError, Joi } = require('express-validation');
 const validate_user = require('../../middlewares/validate_users');
@@ -37,7 +37,7 @@ router.post('/', validate(validationProducts, {}, {}), async (req, res) => {
     const data = { user_id:req.user.id, title, price, stock}
     const Product = await Products.create(data);
 
-    stan.publish('product:add', JSON.stringify(data), (err, guid) => {
+    nats.stan.publish('product:add', JSON.stringify(data), (err, guid) => {
       if (err) {
         console.log('publish failed: ' + err)
       } else {

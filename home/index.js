@@ -3,6 +3,7 @@ const app = express()
 require('dotenv').config()
 
 const logger = require('./middlewares/logger');
+const nats = require('./nats/index');
 
 
 const mongoose = require('mongoose');
@@ -47,23 +48,6 @@ app.get('/home/search', async function (req, res) {
     let products = await Product.find( { 'title' : { '$regex' : q, '$options' : 'i' } } )
     res.json({products})
 }) 
-
-app.post('/products', function (req, res) {
-    try {
-      
-        const {title, price, stock} = req.body
-        const data = {title, price, stock}
-
-        new Product(data).save();
-    
-        res.status(201).send({data: {msj: "Product añadido"}});
-    
-    } catch (error) {
-        console.log(error)
-    }
-  
-})
-
 
 app.listen(process.env.APP_PORT, () => {
     console.log(`Server running on ${process.env.APP_PORT}`)
