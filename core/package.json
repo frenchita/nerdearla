@@ -14,6 +14,7 @@
     "jest": "^28.1.2",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.3.3",
+    "node-nats-streaming": "^0.3.2",
     "nodemon": "^2.0.19",
     "sequelize": "^6.21.2",
     "supertest": "^6.2.4"

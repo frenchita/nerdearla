@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const { Products } = require("../../models")
+const {stan} = require("../../nats/index")
 
 const { validate, ValidationError, Joi } = require('express-validation');
 const validate_user = require('../../middlewares/validate_users');
+
 
 const validationProducts = {
   body: Joi.object({
@@ -27,18 +29,31 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', validate(validationProducts, {}, {}), async (req, res) => {
-  try {
+//  try {
+  
 
     const {user_id, title, price, stock} = req.body
-    const Product = await Products.create({ user_id:req.user.id, title, price, stock});
+
+    const data = { user_id:req.user.id, title, price, stock}
+    const Product = await Products.create(data);
+
+    stan.publish('product:add', JSON.stringify(data), (err, guid) => {
+      if (err) {
+        console.log('publish failed: ' + err)
+      } else {
+        console.log('published message with guid: ' + guid)
+      }
+    })
+
+
     res.status(201).json( { data: {
         msj: `Product ${Product.title} has been added`,
         id: Product.id 
       }
     })
-  } catch (error) {
+/*  } catch (error) {
     res.status(400).json({msj: error})  
-  }
+  } */
   
 })
 
