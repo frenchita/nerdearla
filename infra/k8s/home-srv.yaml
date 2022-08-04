@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: home-depl
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: home
@@ -26,7 +26,13 @@ spec:
           - name: NATS_HOST
             value: "nats-srv"
           - name: NATS_PORT
-            value: "4222"            
+            value: "4222"           
+          - name: REDIS_HOST
+            value: "home-redis-srv"
+          - name: REDIS_PORT
+            value: "6379"
+
+
 ---
 apiVersion: v1
 kind: Service

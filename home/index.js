@@ -9,15 +9,13 @@ const nats = require('./nats/index');
 var mongoose = require('mongoose');
 const Product = require("./models/product")
 
-
 app.use(express.json())
 app.use(logger)
 
 
-
 mongoose.connect(`mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`, {useNewUrlParser: true});
 mongoose.connection.once('open', function() {
-  console.log("Connection Successful!");
+  console.log("MongoDB Connection Successful!");
 });
 
 mongoose.connection.on('error', err => {

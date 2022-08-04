@@ -9,8 +9,11 @@ class NatsConnector {
   constructor() {
     const { createHmac, randomBytes } = require("crypto")
 
-    this.stan = nats.connect('nerdearla', 'cosas_client' + randomBytes(6).toString('hex'), {
+    this.stan = nats.connect('nerdearla', 'home_client' + randomBytes(6).toString('hex'), {
       url: `http://${process.env.NATS_HOST}:${process.env.NATS_PORT}`,
+    }, (err, guid) => {
+        if(err) console.log(err)
+        else console.log(guid)
     });
 
     this.stan.on('connect', async () => {
@@ -18,7 +21,7 @@ class NatsConnector {
       this.stan.subscribe('product:add').on('message', (msg) => {
         const data = JSON.parse(msg.getData())
         new Product({id: data.id, user_id: data.user_id, title:data.title, price:data.price, stock:data.stock }).save();
-      }) 
+      })
 
       this.stan.subscribe('product:stock').on('message', async (msg) => {
         const data = JSON.parse(msg.getData())
